@@ -1,0 +1,47 @@
+  python-ueberzug-git
+
+  php-xdebug
+
+  ascii-image-convert 
+
+  tty-clock 
+
+  adduser 
+
+  android-studio 
+
+  exa 
+
+  duf 
+
+   timer 
+
+   countdown 
+
+  countdown 
+
+   confetty 
+
+  nyancat 
+
+  lolcat 
+
+  pv 
+
+  dirb 
+
+  pbcopy 
+
+  say 
+
+  usbutils 
+
+  stow 
+
+  visual-studio-code-bin 
+
+  chrome-gnome-shell 
+
+  tree 
+
+
