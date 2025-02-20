@@ -22,8 +22,8 @@ homeBrew() {
   __EstaInstalado brew && return 0    # Verificar [True/false]
 
   # Instalar Paquete
-  txt_color "⏳ Instalando $gestor..." green
-  sudo pacman -S --needed base-devel
+  txt_color "⏳ Instalando Homebrew ..." green
+  __instalarPaquete base-devel
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
   source ~/.zshrc
 
@@ -37,6 +37,8 @@ homeBrew() {
 
 main() {
   homeBrew
+
+  __preguntaDeConfirmacion "¿Desea Continuar?" || __salir
 
   for gestor in "${array[@]}"; do
 
