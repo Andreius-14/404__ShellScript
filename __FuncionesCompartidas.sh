@@ -21,7 +21,7 @@ __EstaInstalado() {
   fi
 }
 
-__DirectorioExiste(){
+__DirectorioExiste() {
   local directorio="$1"
 
   [[ -d "$directorio" ]] && return 0
@@ -29,7 +29,6 @@ __DirectorioExiste(){
   txt_color "\n 💀 El directorio '$directorio' no existe. \n" "red"
   return 1
 }
-
 
 # ═══════════════════════════════
 #         MENSAJES
@@ -59,7 +58,6 @@ txt_color() {
   echo -e "\e[${num_color}m${msg}\e[0m"
 }
 
-
 Error() {
   # Validar que se pase un mensaje
   if [ -z "$1" ]; then
@@ -75,17 +73,16 @@ Error() {
   return 1
 }
 
-
 # ═══════════════════════════════
 # Funciones - Grandes
 # ═══════════════════════════════
 
 # Psdt: Facilita Solicitar un Imput al Usuario, Formato Bucle Nose puede Salta Solo Ingresa el Formato Correcto
 input_validador() {
-  local mensaje="$1"        # Mensaje que se muestra al usuario
-  local tipo="$2"           # Tipo de validación (numeros, texto, mixto)
-  local validado            # Expresión regular para validar el input
-  local input               # Variable para almacenar el input del usuario
+  local mensaje="$1" # Mensaje que se muestra al usuario
+  local tipo="$2"    # Tipo de validación (numeros, texto, mixto)
+  local validado     # Expresión regular para validar el input
+  local input        # Variable para almacenar el input del usuario
 
   case "$tipo" in
   "numeros") validado="^[0-9]+$" ;;
@@ -105,58 +102,74 @@ input_validador() {
       echo "El input contiene caracteres no permitidos. Inténtalo de nuevo."
     fi
   done
-  
+
   # Retornar el resultado como salida de la función
   echo "$input"
 }
 
-
 __preguntaDeConfirmacion() {
   local pregunta="${1:-¿Deseas continuar?}"
-
+  local pregunta_coloreada=$(txt_color "$pregunta" "cyan")
   # Solicitar confirmación
   while true; do
 
-    read -p "$pregunta (yes/no): " respuesta
+    read -p "$pregunta_coloreada (yes/no): " respuesta
 
     # Paso: Switch
     case "$respuesta" in
-      [Yy]* | [Ss]*) return 0 ;;  # Acepta "yes", "y", "s", "si"
-      [Nn]*) 
-        echo "Operación cancelada."
-        return 1 ;;  # Cancela si es "no", "n"
-      *) 
-        echo "Por favor, responde 'yes' o 'no'." ;;
-    esac  
+    [Yy]* | [Ss]*) return 0 ;; # Acepta "yes", "y", "s", "si"
+    [Nn]*)
+      echo "Operación cancelada."
+      return 1
+      ;; # Cancela si es "no", "n"
+    *)
+      echo "Por favor, responde 'yes' o 'no'."
+      ;;
+    esac
   done
 }
-
 
 # ═══════════════════════════════
 #         Ejecutar
 # ═══════════════════════════════
 
 __instalarPaquete() {
-  local paquete="$1"
 
   if __EstaInstalado "$paquete"; then
-    return 0  # Ya está instalado, no hace falta hacer nada
+    return 0 # Ya está instalado, no hace falta hacer nada
   fi
 
-  if __EstaInstalado "pacman"; then
-    sudo pacman -S --needed --noconfirm "$paquete"
-  elif __EstaInstalado "pkg"; then
-    pkg install -y "$paquete"
-  else
-    txt_color "❌ No se encontró un gestor de paquetes compatible." red
-    return 1
-  fi
+  # Variables
+  local paquete="$1"
+  local gestor=$(__detectarGestorPaquetes) || return 1 # Si falla, termina con error
+
+  # MSM
+  txt_color "⬇️ Instalando '$paquete' con $gestor..." "yellow"
+
+  # INSTALL
+  case "$gestor" in
+  "pacman")
+    sudo pacman -S --needed --noconfirm "$paquete" || {
+      Error "No se pudo instalar '$paquete' con pacman."
+      return 1
+    }
+    ;;
+  "pkg")
+    pkg install -y "$paquete" || {
+      Error "No se pudo instalar '$paquete' con pkg."
+      return 1
+    }
+    ;;
+  esac
+  
+  return 0
+
 }
 
 __seleccionar_archivo() {
   local carpeta="$1"
   local archivos=($(ls "$carpeta"))
-  
+
   # Mostrar opciones y permitir selección
   select archivo in "${archivos[@]}"; do
     if [ -n "$archivo" ]; then
@@ -167,4 +180,37 @@ __seleccionar_archivo() {
       echo "Selección no válida, intenta nuevamente."
     fi
   done
+}
+
+# EXTRA
+
+__detectarGestorPaquetes() {
+  local gestor
+
+  # Lista de gestores de paquetes a verificar (en orden de preferencia)
+  if command -v pacman >/dev/null 2>&1; then
+    gestor="pacman"
+  elif command -v pkg >/dev/null 2>&1; then
+    gestor="pkg"
+  elif command -v apt >/dev/null 2>&1; then
+    gestor="apt"
+  elif command -v dnf >/dev/null 2>&1; then
+    gestor="dnf"
+  elif command -v yum >/dev/null 2>&1; then
+    gestor="yum"
+  elif command -v zypper >/dev/null 2>&1; then
+    gestor="zypper"
+  else
+    gestor=""
+  fi
+
+  # Si se encontró un gestor, devolverlo; si no, error
+  if [ -n "$gestor" ]; then
+    txt_color "🌱 Gestor de paquetes detectado: $gestor" "green" >&2
+    echo "$gestor" # Retorna el nombre del gestor como salida
+    return 0
+  else
+    Error "No se encontró un gestor de paquetes compatible."
+    return 1
+  fi
 }
