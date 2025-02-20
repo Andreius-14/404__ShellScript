@@ -5,11 +5,14 @@ source __FuncionesCompartidas.sh
 #           Variables
 # ═══════════════════════════════
 
-local array=(
-  yay         # AUR Helper
-  npm         # Node.js Package Manager
-  pnpm        # Alternativa más eficiente a npm
-  python-pip  # Gestor de paquetes de Python
+local array_General=(
+  nodejs
+  python
+)
+
+local array_Arch=(
+  yay
+  python-pip
   python-pipx # Para instalar herramientas Python en entornos aislados
 
 )
@@ -19,7 +22,7 @@ local array=(
 # ═══════════════════════════════
 
 homeBrew() {
-  __EstaInstalado brew && return 0    # Verificar [True/false]
+  __EstaInstalado brew && return 0 # Verificar [True/false]
 
   # Instalar Paquete
   txt_color "⏳ Instalando Homebrew ..." green
@@ -27,8 +30,7 @@ homeBrew() {
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
   source ~/.zshrc
 
-
-  __EstaInstalado brew                # Verificar [True/false]
+  __EstaInstalado brew # Verificar [True/false]
 }
 
 # ═══════════════════════════════
@@ -36,9 +38,10 @@ homeBrew() {
 # ═══════════════════════════════
 
 main() {
-  homeBrew
 
-  __preguntaDeConfirmacion "¿Desea Continuar?" || __salir
+  __preguntaDeConfirmacion '¿Instalar HomeBrew?' && homeBrew
+
+  __preguntaDeConfirmacion "¿Continuar con los Demas Gestores?" || __salir
 
   for gestor in "${array[@]}"; do
 

@@ -141,7 +141,7 @@ __instalarPaquete() {
 
   # Variables
   local paquete="$1"
-  local gestor=$(__detectarGestorPaquetes) || return 1 # Si falla, termina con error
+  local gestor="${2:-$(__detectarGestorPaquetes)}" || return 1 # Si falla, termina con error
 
   # MSM
   txt_color "⬇️ Instalando '$paquete' con $gestor..." "yellow"
@@ -161,9 +161,34 @@ __instalarPaquete() {
     }
     ;;
   esac
-  
+
   return 0
 
+}
+
+__instalarPaquetesArray() {
+
+  # Capturar todos los argumentos en un array
+  local paquetes=("$@")
+  local gestorDeDistro=$(__detectarGestorPaquetes) || Error "Sin Gestor reconocido" ; return 1
+  local exit_code=0 # Para rastrear si hubo fallos
+
+  # Iterar sobre cada paquete y llamar a __instalarPaquete
+  for paquete in "${paquetes[@]}"; do
+    __instalarPaquete "$paquete" "$gestorDeDistro" || {
+      # Si falla, marcamos exit_code pero continuamos
+      txt_color "⚠️ Continuando a pesar del fallo con '$paquete'..." "yellow" >&2
+      exit_code=1
+    }
+  done
+
+  # Retornar el estado final
+  if [ $exit_code -eq 0 ]; then
+    txt_color "✅ Todos los paquetes se instalaron correctamente." "green" >&2
+  else
+    txt_color "⚠️ Algunos paquetes no se instalaron correctamente." "red" >&2
+  fi
+  return $exit_code
 }
 
 __seleccionar_archivo() {
