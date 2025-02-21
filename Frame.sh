@@ -38,9 +38,9 @@ FrameAscii() {
 
   mkdir -p $folder
 
-  ascii-image-converter $path_nombre/*.png --save-txt $folder || Error "Imagen a Ascii"
+  ascii-image-converter $path_nombre/*.png --save-txt $folder || __Error "Imagen a Ascii"
 
-  rename "ascii-art" "" $folder/* && rename "-" "" $folder/* || Error "Al Renombrar"
+  rename "ascii-art" "" $folder/* && rename "-" "" $folder/* || __Error "Al Renombrar"
 
   echo "Conversión completada"
 }
@@ -54,7 +54,7 @@ Frame() {
 
   mkdir -p $folder
 
-  ffmpeg -i "$input_frame" "$folder/%03d.png" || Error "Extraccion Frames"
+  ffmpeg -i "$input_frame" "$folder/%03d.png" || __Error "Extraccion Frames"
 
   echo "Extracción completada. '$folder'."
 }

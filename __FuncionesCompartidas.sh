@@ -58,7 +58,7 @@ txt_color() {
   echo -e "\e[${num_color}m${msg}\e[0m"
 }
 
-Error() {
+__Error() {
   # Validar que se pase un mensaje
   if [ -z "$1" ]; then
     echo -e "\e[31mError: No se proporcionó ningún mensaje.\e[0m" >&2
@@ -150,13 +150,13 @@ __instalarPaquete() {
   case "$gestor" in
   "pacman")
     sudo pacman -S --needed --noconfirm "$paquete" || {
-      Error "No se pudo instalar '$paquete' con pacman."
+      __Error "No se pudo instalar '$paquete' con pacman."
       return 1
     }
     ;;
   "pkg")
     pkg install -y "$paquete" || {
-      Error "No se pudo instalar '$paquete' con pkg."
+      __Error "No se pudo instalar '$paquete' con pkg."
       return 1
     }
     ;;
@@ -170,7 +170,7 @@ __instalarPaquetesArray() {
 
   # Capturar todos los argumentos en un array
   local paquetes=("$@")
-  local gestorDeDistro=$(__detectarGestorPaquetes) || Error "Sin Gestor reconocido" ; return 1
+  local gestorDeDistro=$(__detectarGestorPaquetes) || __Error "Sin Gestor reconocido" ; return 1
   local exit_code=0 # Para rastrear si hubo fallos
 
   # Iterar sobre cada paquete y llamar a __instalarPaquete
@@ -235,7 +235,7 @@ __detectarGestorPaquetes() {
     echo "$gestor" # Retorna el nombre del gestor como salida
     return 0
   else
-    Error "No se encontró un gestor de paquetes compatible."
+    __Error "No se encontró un gestor de paquetes compatible."
     return 1
   fi
 }

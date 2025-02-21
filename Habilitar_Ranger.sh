@@ -38,7 +38,7 @@ instalar_Plugindevicons() {
 # ═══════════════════════════════
 
 # Instalar Ranger si no está presente
-__instalarPaquete ranger || Error "Error: No se pudo instalar Ranger."
+__instalarPaquete ranger || __Error "Error: No se pudo instalar Ranger."
 
 # Confirmar si se desea instalar la configuración personalizada
 __preguntaDeConfirmacion "¿Desea instalar la configuración personalizada?" || __salir
