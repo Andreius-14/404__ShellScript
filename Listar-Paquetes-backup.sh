@@ -46,6 +46,7 @@ DefineRuta() {
     ;;
   esac
 
+  # txt_color "$Dir_final" blue
 }
 
 EjecucionDeComandos() {
@@ -60,14 +61,19 @@ EjecucionDeComandos() {
 #             Main
 # ═══════════════════════════════
 main() {
-  __EstaInstaladoArray "${package_Necesarios[@]}" || return 1
-  __DirectorioExiste "$Dir_Main" || return 1
-
   DefineRuta
+
+  txt_color "\nPaquetes Necesarios:" blue
+  __EstaInstaladoArray "${package_Necesarios[@]}" || return 1
+
+  txt_color "\nDirectorio Final:" blue
+  __DirectorioExiste "$Dir_final" || return 1
+
+  txt_color "\nCreando Archivos:" blue
   EjecucionDeComandos "$Dir_final"
 
-  txt_color "Listas de Paquetes -- Linux" blue
-  eza -T --level=1 $Dir_Main
+  txt_color "\nListas de Paquetes -- Linux" blue
+  eza -T --level=1 $Dir_final
 
 }
 

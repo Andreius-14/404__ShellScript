@@ -22,20 +22,30 @@ __EstaInstalado() {
 }
 
 __EstaInstaladoArray() {
+  local valor=0
   for item in "$@"; do
-    __EstaInstalado "$item"
+    __EstaInstalado "$item" || valor=1
   done
+  return "$valor"
 }
 
 __DirectorioExiste() {
   local directorio="$1"
 
-  [[ -d "$directorio" ]] && return 0
+  [[ -d "$directorio" ]] && {
+    txt_color "🌱 $directorio (Existe)" blue
+    return 0
+  }
 
-  txt_color "\n 💀 El directorio '$directorio' no existe. \n" "red"
-  
-  __preguntaDeConfirmacion "¿Desea crear la Carpeta [$directorio] ?"
-  
+  txt_color "\n $directorio (no existe) \n" "red"
+
+  __CrearCarpeta "$directorio"
+}
+
+__CrearCarpeta() {
+  local directorio="$1"
+  __preguntaDeConfirmacion "¿Desea crear la Carpeta [$directorio] ?" || return 1
+  mkdir "$directorio"
 
 }
 
