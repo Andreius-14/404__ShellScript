@@ -2,51 +2,71 @@
 source __FuncionesCompartidas.sh
 
 # ═══════════════════════════════
-#           Variables
+#     Variables -- Simples
 # ═══════════════════════════════
-Directorio_Principal="$HOME/.Dotfile/.Archivos-Temporales" 
-
+Dir_Main="$HOME/.Dotfile/.Archivos-Temporales"
+Dir_Termux="Package_Termux"
+Dir_Arch="Package_Arch"
+Dir_final="$Dir_Main"
+# ═══════════════════════════════
+#     Variables -- Array
+# ═══════════════════════════════
 ejecutar=(
-"pacman -Qqe"
-"pamac list -qe"
-" npm list -g --json | jq -r '.dependencies | keys[]' "
-" pnpm list -g  --json | jq -r '.[].dependencies | keys[]' "
-"brew leaves"
-"flatpak list --columns=application --app"
+  "pacman -Qqe"
+  "pamac list -qe"
+  "npm list -g --json | jq -r '.dependencies | keys[]' "
+  "pnpm list -g  --json | jq -r '.[].dependencies | keys[]' "
+  "brew leaves"
+  "flatpak list --columns=application --app"
+  "gnome-extensions list --enabled"
+  "code --list-extensions "
+)
+
+package_Necesarios=(
+  jq
+  eza
 )
 # ═══════════════════════════════
 #           Funciones
 # ═══════════════════════════════
 
-Dotfiles_paquetes   () {
-  # Verificar si el directorio existe
-    __EstaInstalado jq
-    __EstaInstalado eza
-    __DirectorioExiste "$Directorio_Principal" || return 1
-
-    # Ejecucion Personalizada
-    gnome-extensions list > "$Directorio_Principal/Gnome_All_Extensiones.txt"            || __Error "Error_Gnome"
-    gnome-extensions list --enabled > "$Directorio_Principal/Gnome_Enable_Extensiones.txt"   || __Error "Error_Gnome"
-    code --list-extensions > "$Directorio_Principal/List_VsCode-Ext.txt" || __Error "Vscode"
-
-    # Ejecucion Automatizada
-    for comando in "${ejecutar[@]}";do
-      primera_palabra=$(echo "$comando" | awk '{print $1}')
-      eval "$comando" > "$Directorio_Principal/List_${primera_palabra}.txt" || __Error "${primera_palabra}"
-    done
-
-    echo "Listas de Paquetes -- Linux"
-
-    eza -T --level=1 $Directorio_Principal
+DefineRuta() {
+  local paquete=$(__detectarGestorPaquetes)
+  case "$paquete" in
+  "pkg")
+    Dir_final="$Dir_Main/$Dir_Termux"
+    ;;
+  "pacman")
+    Dir_final="$Dir_Main/$Dir_Arch"
+    ;;
+  *)
+    Dir_final="$Dir_Main"
+    ;;
+  esac
 
 }
 
+EjecucionDeComandos() {
+  local ruta="${1:-"$Dir_Main"}"
+  # Ejecucion Automatizada
+  for comando in "${ejecutar[@]}"; do
+    primera_palabra=$(echo "$comando" | awk '{print $1}')
+    eval "$comando" >"$ruta/List_${primera_palabra}.txt" || __Error "${primera_palabra}"
+  done
+}
 # ═══════════════════════════════
 #             Main
 # ═══════════════════════════════
 main() {
-  Dotfiles_paquetes
+  __EstaInstaladoArray "${package_Necesarios[@]}" || return 1
+  __DirectorioExiste "$Dir_Main" || return 1
+
+  DefineRuta
+  EjecucionDeComandos "$Dir_final"
+
+  txt_color "Listas de Paquetes -- Linux" blue
+  eza -T --level=1 $Dir_Main
+
 }
 
 main
-

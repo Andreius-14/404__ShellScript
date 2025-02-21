@@ -21,13 +21,22 @@ __EstaInstalado() {
   fi
 }
 
+__EstaInstaladoArray() {
+  for item in "$@"; do
+    __EstaInstalado "$item"
+  done
+}
+
 __DirectorioExiste() {
   local directorio="$1"
 
   [[ -d "$directorio" ]] && return 0
 
   txt_color "\n 💀 El directorio '$directorio' no existe. \n" "red"
-  return 1
+  
+  __preguntaDeConfirmacion "¿Desea crear la Carpeta [$directorio] ?"
+  
+
 }
 
 # ═══════════════════════════════
@@ -108,7 +117,7 @@ input_validador() {
 }
 
 __preguntaDeConfirmacion() {
-  local pregunta="${1:-¿Deseas continuar?}"
+  local pregunta="${1:-"¿Deseas continuar?"}"
   local pregunta_coloreada=$(txt_color "$pregunta" "cyan")
   # Solicitar confirmación
   while true; do
@@ -155,7 +164,7 @@ __instalarPaquete() {
     }
     ;;
   "pkg")
-    pkg install -y "$paquete" || {
+    pkg install -y10 "$paquete" || {
       __Error "No se pudo instalar '$paquete' con pkg."
       return 1
     }
@@ -168,27 +177,13 @@ __instalarPaquete() {
 
 __instalarPaquetesArray() {
 
-  # Capturar todos los argumentos en un array
   local paquetes=("$@")
-  local gestorDeDistro=$(__detectarGestorPaquetes) || __Error "Sin Gestor reconocido" ; return 1
-  local exit_code=0 # Para rastrear si hubo fallos
-
+  local gestorDeDistro=$(__detectarGestorPaquetes) || exit 0
   # Iterar sobre cada paquete y llamar a __instalarPaquete
-  for paquete in "${paquetes[@]}"; do
-    __instalarPaquete "$paquete" "$gestorDeDistro" || {
-      # Si falla, marcamos exit_code pero continuamos
-      txt_color "⚠️ Continuando a pesar del fallo con '$paquete'..." "yellow" >&2
-      exit_code=1
-    }
+  for item in "${paquetes[@]}"; do
+    __instalarPaquete "$item" "$gestorDeDistro" || __Error "Fallo con $paquete'..."
   done
 
-  # Retornar el estado final
-  if [ $exit_code -eq 0 ]; then
-    txt_color "✅ Todos los paquetes se instalaron correctamente." "green" >&2
-  else
-    txt_color "⚠️ Algunos paquetes no se instalaron correctamente." "red" >&2
-  fi
-  return $exit_code
 }
 
 __seleccionar_archivo() {
