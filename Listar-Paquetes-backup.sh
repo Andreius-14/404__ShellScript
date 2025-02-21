@@ -20,7 +20,9 @@ ejecutar=(
   "flatpak list --columns=application --app"
   "gnome-extensions list --enabled"
   "code --list-extensions "
+  "pip list"
 )
+
 
 package_Necesarios=(
   jq
