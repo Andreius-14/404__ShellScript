@@ -28,7 +28,7 @@ Los Puertos Habiertos ⮯
     " blue
 
     # Ejecucion
-    ss -tuln ||  nmap localhost | grep "open" 
+    nmap localhost | grep "open" || ss -tuln
 }
 
 main() {
