@@ -153,14 +153,13 @@ __preguntaDeConfirmacion() {
 # ═══════════════════════════════
 
 __instalarPaquete() {
+  # Variables
+  local paquete="$1"
+  local gestor="${2:-$(__detectarGestorPaquetes)}" || return 1 # Si falla, termina con error
 
   if __EstaInstalado "$paquete"; then
     return 0 # Ya está instalado, no hace falta hacer nada
   fi
-
-  # Variables
-  local paquete="$1"
-  local gestor="${2:-$(__detectarGestorPaquetes)}" || return 1 # Si falla, termina con error
 
   # MSM
   txt_color "⬇️ Instalando '$paquete' con $gestor..." "yellow"
