@@ -27,12 +27,12 @@ Mostrar_Particiones() {
 #======================================
 
 Crear_Ubicacion_De_Montaje() {
-  # local rutaBase="/mnt"
-  local rutaBase="/run/media/$(whoami)"
+  local rutaBase="/mnt"
+  # local rutaBase="/run/media/$(whoami)" # para Arch en Debian 
   local NombreCarpeta="$1"
   local rutaMontada="$rutaBase/$NombreCarpeta"
 
-  mkdir -p "$rutaMontada"  &&  chmod 777 "$rutaMontada"
+  sudo mkdir -p "$rutaMontada"  &&  chmod 777 "$rutaMontada"
   echo "$rutaMontada"
 }
 
