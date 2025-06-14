@@ -1,5 +1,5 @@
 #!/bin/bash
-source __FuncionesCompartidas.sh
+source __Shared.sh
 
 show_ArchivoJupyter() {
     local archivo="$1"
@@ -10,7 +10,7 @@ show_ArchivoJupyter() {
         case "$cell_type" in
         "code")
             txt_color "[CODE] ════════════════════════════════════════════════════════════╗" "green"
-            echo -e "$content" "white"| bat --paging=never --language python --theme "Dracula"
+            echo -e "$content" "white" | bat --paging=never --language python --theme "Dracula"
             txt_color "═══════════════════════════════════════════════════════════════════╝" "green"
             ;;
         "markdown")
