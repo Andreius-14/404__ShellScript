@@ -1,5 +1,5 @@
 #!/bin/bash
-source __FuncionesCompartidas.sh
+source __Shared.sh
 
 info_ssh() {
     txt_color "\n

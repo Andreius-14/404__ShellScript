@@ -1,6 +1,5 @@
-
 #!/bin/bas
-source __FuncionesCompartidas.sh
+source __Shared.sh
 
 # __preguntaDeConfirmacion "¿Esta de Color?" || __salir
 # txt_color "Logrado" blue

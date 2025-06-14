@@ -1,19 +1,19 @@
 #!/bin/bash
-source __FuncionesCompartidas.sh
+source __Shared.sh
 
 # ═══════════════════════════════
 #           Variables
 # ═══════════════════════════════
 
 local array_General=(
-  nodejs
-  python
+    nodejs
+    python
 )
 
 local array_Arch=(
-  yay
-  python-pip
-  python-pipx # Para instalar herramientas Python en entornos aislados
+    yay
+    python-pip
+    python-pipx # Para instalar herramientas Python en entornos aislados
 
 )
 
@@ -22,15 +22,15 @@ local array_Arch=(
 # ═══════════════════════════════
 
 homeBrew() {
-  __EstaInstalado brew && return 0 # Verificar [True/false]
+    __EstaInstalado brew && return 0 # Verificar [True/false]
 
-  # Instalar Paquete
-  txt_color "⏳ Instalando Homebrew ..." green
-  __instalarPaquete base-devel
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-  source ~/.zshrc
+    # Instalar Paquete
+    txt_color "⏳ Instalando Homebrew ..." green
+    __instalarPaquete base-devel
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
+    source ~/.zshrc
 
-  __EstaInstalado brew # Verificar [True/false]
+    __EstaInstalado brew # Verificar [True/false]
 }
 
 # ═══════════════════════════════
@@ -39,22 +39,22 @@ homeBrew() {
 
 main() {
 
-  __preguntaDeConfirmacion '¿Instalar HomeBrew?' && homeBrew
+    __preguntaDeConfirmacion '¿Instalar HomeBrew?' && homeBrew
 
-  __preguntaDeConfirmacion "¿Continuar con los Demas Gestores?" || __salir
+    __preguntaDeConfirmacion "¿Continuar con los Demas Gestores?" || __salir
 
-  for gestor in "${array[@]}"; do
+    for gestor in "${array[@]}"; do
 
-    # Verificacion - Verifcamos Si el paquete ya esta instalado ,Saltamos si el caso
-    if __EstaInstalado "$gestor"; then
-      continue # Evita instalación innecesaria
-    fi
+        # Verificacion - Verifcamos Si el paquete ya esta instalado ,Saltamos si el caso
+        if __EstaInstalado "$gestor"; then
+            continue # Evita instalación innecesaria
+        fi
 
-    # Ejecuta - Ejecutamos El comando de Instalacion
-    txt_color "⏳ Instalando $gestor..." green
-    __instalarPaquete "$gestor"
+        # Ejecuta - Ejecutamos El comando de Instalacion
+        txt_color "⏳ Instalando $gestor..." green
+        __instalarPaquete "$gestor"
 
-  done
+    done
 }
 
 main

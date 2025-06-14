@@ -1,5 +1,5 @@
 #!/bin/bash
-source __FuncionesCompartidas.sh
+source __Shared.sh
 
 # ═══════════════════════════════
 # Funciones - Pequeñas
@@ -23,7 +23,6 @@ source __FuncionesCompartidas.sh
 #           Funciones
 # ═══════════════════════════════
 
-
 # ═══════════════════════════════
 #             Main
 # ═══════════════════════════════
@@ -38,28 +37,27 @@ main
 # ═══════════════════════════════
 
 Menu_Seleccionable() {
-  echo "╔════════════════════════════╗ "
-  echo "║       MENÚ PRINCIPAL       ║ "
-  echo "╚════════════════════════════╝ "
-  echo "1) Opcion [01] "
-  echo "2) Opcion [02]"
-  echo "3) Salir"
-  echo "========================="
-  read -p "Seleccione una opción [1-3]:" Opcion_Elegida
+    echo "╔════════════════════════════╗ "
+    echo "║       MENÚ PRINCIPAL       ║ "
+    echo "╚════════════════════════════╝ "
+    echo "1) Opcion [01] "
+    echo "2) Opcion [02]"
+    echo "3) Salir"
+    echo "========================="
+    read -p "Seleccione una opción [1-3]:" Opcion_Elegida
 }
-
 
 # ═══════════════════════════════
 #           Menú 2/2
 # ═══════════════════════════════
 while true; do
-  Menu_Seleccionable
+    Menu_Seleccionable
 
-  # Opcion Elegida
-  case "$Opcion_Elegida" in
-  1) Mostrar_Particiones ;;
-  2) Main ;;
-  3) __salir ;;
-  *) txt_color "Opcion Incorrecta - Elija de Nuevo" green ;;
-  esac
+    # Opcion Elegida
+    case "$Opcion_Elegida" in
+    1) Mostrar_Particiones ;;
+    2) Main ;;
+    3) __salir ;;
+    *) txt_color "Opcion Incorrecta - Elija de Nuevo" green ;;
+    esac
 done
