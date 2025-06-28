@@ -6,9 +6,15 @@ source __Base.sh
 
 __CrearCarpeta() {
     local directorio="$1"
-    __preguntaDeConfirmacion "¿Desea crear la Carpeta [$directorio] ?" #|| return 1
-    sudo mkdir -p "$directorio"
 
+    if [ ! -d "$directorio" ]; then
+        __preguntaDeConfirmacion "¿Desea crear la Carpeta [$directorio] ?" #|| return 1
+
+        sudo mkdir -p "$directorio"
+        echo "Carpeta '$directorio' creada."
+    else
+        echo "'$directorio' Existe."
+    fi
 }
 
 # ═══════════════════════════════
