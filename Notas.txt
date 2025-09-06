@@ -1,0 +1,3 @@
+
+En Menus usar select con Switch dentro
+No usar While con Switch Dentro
