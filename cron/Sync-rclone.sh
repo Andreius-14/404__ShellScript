@@ -30,7 +30,7 @@ drive_book="$remoto_hobby:/Files/Mis-Libros"
 drive_music="$remoto_hobby:/101__Musica"
 
 ruta_arte="/media/carlos/Personal/101__Arte"
-ruta_book="/media/carlos/Personal/📁 Documentos/101__Libros"
+ruta_book="/media/carlos/Personal/101__Libros"
 ruta_music="/media/carlos/Personal/101__Musica"
 
 #════════════════════════════════════════════════════════════════════
