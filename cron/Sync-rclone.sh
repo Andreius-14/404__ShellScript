@@ -23,25 +23,41 @@ export XAUTHORITY=/home/carlos/.Xauthority # <-- esta asegura el acceso a tu ses
 
 ruta_log="/home/carlos/Documentos/Sync-rclone.log"
 
-remoto_hobby="Carma_379"
+drive="Carma_379"
+ruta="/media/carlos/Personal"
 
-drive_arte="$remoto_hobby:/101__Arte"
-drive_book="$remoto_hobby:/Files/Mis-Libros"
-drive_music="$remoto_hobby:/101__Musica"
+drive_arte="$drive:/101__Arte"
+drive_book="$drive:/Files/Mis-Libros"
+drive_music="$drive:/101__Musica"
 
-ruta_arte="/media/carlos/Personal/101__Arte"
-ruta_book="/media/carlos/Personal/101__Libros"
-ruta_music="/media/carlos/Personal/101__Musica"
+ruta_arte="$ruta/101__Arte"
+ruta_book="$ruta/101__Libros"
+ruta_music="$ruta/101__Musica"
+
+flag=(--progress)
+
+#════════════════════════════════════════════════════════════════════
+#                       Function
+#════════════════════════════════════════════════════════════════════
+
+msm(){
+    echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando $1 ====" >> "$ruta_log"
+}
+
+run(){
+    /usr/bin/rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1  \
+ || /usr/bin/notify-send "Rclone ❌" "Error en: $1"
+}
 
 #════════════════════════════════════════════════════════════════════
 #                      Ejecucion de Comandos
 #════════════════════════════════════════════════════════════════════
 
-echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando Arte ====" >>"$ruta_log"
-/usr/bin/rclone bisync "$ruta_arte" "$drive_arte" --progress >>"$ruta_log" 2>&1
+msm "Arte"
+run "$ruta_arte" "$drive_arte" 
 
-echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando Libros ====" >>"$ruta_log"
-/usr/bin/rclone bisync "$ruta_book" "$drive_book" --progress >>"$ruta_log" 2>&1
+msm "Libros"
+run "$ruta_book" "$drive_book"
 
-echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando Musica ====" >>"$ruta_log"
-/usr/bin/rclone bisync "$ruta_music" "$drive_music" --progress >>"$ruta_log" 2>&1
+msm "Musica"
+run "$ruta_music" "$drive_music"
