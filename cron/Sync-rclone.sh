@@ -34,7 +34,7 @@ ruta_arte="$ruta/101__Arte"
 ruta_book="$ruta/101__Libros"
 ruta_music="$ruta/101__Musica"
 
-flag=(--progress)
+flag=(--progress --track-renames)
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
