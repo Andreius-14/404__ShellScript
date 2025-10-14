@@ -94,7 +94,7 @@ input_validador() {
     "email" | "correo") validado="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" ;;
     *)
         #"Cualquier Input Valido"
-        validado="^[a-zA-Z0-9]+$"
+        validado="^[a-zA-Z0-9_-]+$"
         ;;
     esac
 
@@ -131,4 +131,12 @@ __preguntaDeConfirmacion() {
             ;;
         esac
     done
+}
+
+__runSudo() {
+    if [[ $EUID -ne 0 ]]; then
+        sudo "$@"
+    else
+        "$@"
+    fi
 }

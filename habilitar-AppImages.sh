@@ -3,17 +3,17 @@ source __Shared.sh
 
 main() {
 
-    local main="$HOME/Descargas"
+    local base="$HOME/Descargas"
     local contenedor="AppImages"
-    local ruta="$main/$contenedor"
-    local permisos="+x"
+    local ruta="$base/$contenedor"
+    local permisos="u+x"
 
     # Crear carpeta si no existe
     __CrearCarpeta "$ruta"
 
     echo "✅ Iniciando Proceso"
     # Mover AppImages
-    for aplicacion in "$main"/*.AppImage; do
+    for aplicacion in "$base"/*.App[Ii]mage; do
         [ -f "$aplicacion" ] || continue # por si no hay ninguno
         echo "Moviendo appImage: $aplicacion"
         mv "$aplicacion" "$ruta"
@@ -21,7 +21,7 @@ main() {
 
     echo "Buscando AppImages en $ruta..."
 
-    for archivo in "$ruta"/*.AppImage; do
+    for archivo in "$ruta"/*.App[Ii]mage; do
         [ -f "$archivo" ] || continue
         chmod "$permisos" "$archivo"
         echo "Permisos Habilitado: $archivo"
