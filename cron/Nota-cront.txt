@@ -1,0 +1,5 @@
+
+hay comandos que no necesitan ruta adsoluta
+hay comandos que si necesitan ruta adsoluta
+
+los sources no funcionan
