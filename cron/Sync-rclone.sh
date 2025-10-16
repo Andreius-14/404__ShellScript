@@ -46,8 +46,15 @@ msm(){
 
 run(){
     /usr/bin/rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1  \
- || /usr/bin/notify-send "Rclone ❌" "Error en: $1"
+ || /usr/bin/notify-send "Rclone ❌" "Error en: $1" 
 }
+
+
+# ═══════════════════════════════
+#             clean
+# ═══════════════════════════════
+
+[ -f "$ruta_log" ] && [ $(stat -c%s "$ruta_log") -gt 5000000 ] && : >"$ruta_log"
 
 #════════════════════════════════════════════════════════════════════
 #                      Ejecucion de Comandos
@@ -61,3 +68,6 @@ run "$ruta_book" "$drive_book"
 
 msm "Musica"
 run "$ruta_music" "$drive_music"
+
+
+msm "FIN"
