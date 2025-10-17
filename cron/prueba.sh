@@ -58,8 +58,8 @@ export XAUTHORITY=/home/carlos/.Xauthority # <-- esta asegura el acceso a tu ses
 # awk="/usr/bin/awk"
 
 
-notify-send "Hola"
-/usr/bin/notify-send "yestr"
+notify-send "Hola-Prueba"
+/usr/bin/notify-send "Jo"
 
 # spotdl
 # /home/carlos/.local/bin/spotdl

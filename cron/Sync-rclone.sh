@@ -1,7 +1,4 @@
 #!/bin/bash
-# Fecha y hora en el log
-echo "[$(date)] Iniciando sincronización..."
-
 #════════════════════════════════════════════════════════════════════
 #                   Habilitando Modo Grafico
 #════════════════════════════════════════════════════════════════════
@@ -9,13 +6,6 @@ echo "[$(date)] Iniciando sincronización..."
 export DISPLAY=:0
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
 export XAUTHORITY=/home/carlos/.Xauthority # <-- esta asegura el acceso a tu sesión
-
-#════════════════════════════════════════════════════════════════════
-#                                UI
-#════════════════════════════════════════════════════════════════════
-# Voz en terminal (Speech Dispatcher)
-# /usr/bin/spd-say "Sincronización completada con Rclone"
-/usr/bin/notify-send "Sincronizacion Rclone" "Sincronizacion Rclone y Google Drive hydra_falsa@outlook.com ✅"
 
 #════════════════════════════════════════════════════════════════════
 #                  Variables de configuración
@@ -34,7 +24,7 @@ ruta_arte="$ruta/101__Arte"
 ruta_book="$ruta/101__Libros"
 ruta_music="$ruta/101__Musica"
 
-flag=(--progress --track-renames)
+flag=(--progress --track-renames --create-empty-src-dirs --conflict-resolve newer)
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
@@ -60,6 +50,8 @@ run(){
 #                      Ejecucion de Comandos
 #════════════════════════════════════════════════════════════════════
 
+/usr/bin/notify-send "Sincronizacion Rclone" "Sincronizacion Rclone y Google Drive hydra_falsa@outlook.com ✅"
+
 msm "Arte"
 run "$ruta_arte" "$drive_arte" 
 
@@ -69,5 +61,5 @@ run "$ruta_book" "$drive_book"
 msm "Musica"
 run "$ruta_music" "$drive_music"
 
+/usr/bin/notify-send "Sincronizacion Rclone" "Finalizado"
 
-msm "FIN"
