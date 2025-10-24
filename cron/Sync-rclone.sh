@@ -13,32 +13,50 @@ export XAUTHORITY=/home/carlos/.Xauthority # <-- esta asegura el acceso a tu ses
 
 ruta_log="/home/carlos/Documentos/Sync-rclone.log"
 
+main="Andreius_14"
 drive="Carma_379"
+
 ruta="/media/carlos/Personal"
 
+#Drive
 drive_arte="$drive:/101__Arte"
 drive_book="$drive:/Files/Mis-Libros"
 drive_music="$drive:/101__Musica"
 
+drive_personal="$main:/__Personal"
+
+#Local
 ruta_arte="$ruta/101__Arte"
 ruta_book="$ruta/101__Libros"
 ruta_music="$ruta/101__Musica"
+ruta_personal="$ruta/__Personal"
 
 flag=(--progress --track-renames --create-empty-src-dirs --conflict-resolve newer)
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
 #════════════════════════════════════════════════════════════════════
+verificaDirectorio() {
+    /usr/bin/notify-send "Probando $1"
 
-msm(){
-    echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando $1 ====" >> "$ruta_log"
+    if [ ! -d "$1" ]; then
+        msm "Carpeta no encontrada: $1"
+        /usr/bin/notify-send "Rclone ⚠️" "No existe la carpeta local: $1"
+        return 1
+    fi
 }
 
-run(){
-    /usr/bin/rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1  \
- || /usr/bin/notify-send "Rclone ❌" "Error en: $1" 
+msm() {
+    echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando $1 ====" >>"$ruta_log"
 }
 
+run() {
+    # Verificar primero la existencia de la carpeta local
+    verificaDirectorio "$1" || return 1
+
+    /usr/bin/rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1 ||
+        /usr/bin/notify-send "Rclone ❌" "Error en: $1"
+}
 
 # ═══════════════════════════════
 #             clean
@@ -53,7 +71,7 @@ run(){
 /usr/bin/notify-send "Sincronizacion Rclone" "Sincronizacion Rclone y Google Drive hydra_falsa@outlook.com ✅"
 
 msm "Arte"
-run "$ruta_arte" "$drive_arte" 
+run "$ruta_arte" "$drive_arte"
 
 msm "Libros"
 run "$ruta_book" "$drive_book"
@@ -61,5 +79,7 @@ run "$ruta_book" "$drive_book"
 msm "Musica"
 run "$ruta_music" "$drive_music"
 
-/usr/bin/notify-send "Sincronizacion Rclone" "Finalizado"
+msm "Personal - A14"
+run "$ruta_personal" "$drive_personal"
 
+/usr/bin/notify-send "Sincronizacion Rclone" "Finalizado"
