@@ -34,22 +34,23 @@ run() {
     while IFS= read -r -d '' ruta_File; do
 
         #Variables
-        local ruta_Parent="$(dirname "$ruta_File")"
-        local name_Parent="$(basename "$ruta_Parent")"
-        local formato=$(ls "$ruta_Parent" | grep -Eo "(opus|mp3|m4a|ogg)$" | sort | uniq -c | sort -nr | head -n1 | awk '{print $2}')
+        local carpeta="$(dirname "$ruta_File")"
+        local titulo="$(basename "$carpeta")"
+        local formato=$(ls "$carpeta" | grep -Eo "(opus|mp3|m4a|ogg)$" | sort | uniq -c | sort -nr | head -n1 | awk '{print $2}')
+
+        #Contingencia
         [[ -z "$formato" ]] && formato="opus"
 
         #Ejecucion
-        msm_log "$name_Parent (formato: $formato)"
+        msm_log "$titulo (formato: $formato)"
 
-        if $spotdl --format "$formato" sync "$ruta_File" --overwrite skip --output "$ruta_Parent" >>"$ruta_log" 2>&1; then
-            msm "✅ $name_Parent completado"
+        if $spotdl --format "$formato" sync "$ruta_File" --overwrite skip --output "$carpeta" >>"$ruta_log" 2>&1; then
+            msm "✅ $titulo completado"
         else
-            msm "❌ Error en $name_Parent"
+            msm "❌ Error en $titulo"
         fi
 
-    done < <(find "$ruta" -name "*.spotdl" -print0 2>/dev/null) # Maneja si no hay
-
+    done < <(find "$ruta" -name "*.spotdl" -print0 )
 
 }
 
