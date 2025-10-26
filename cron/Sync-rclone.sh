@@ -5,24 +5,22 @@
 # Variables necesarias para que cron hable con tu sesión gráfica
 export DISPLAY=:0
 export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-export XAUTHORITY=/home/carlos/.Xauthority # <-- esta asegura el acceso a tu sesión
+export XAUTHORITY=/home/carlos/.Xauthority
 
 #════════════════════════════════════════════════════════════════════
 #                  Variables de configuración
 #════════════════════════════════════════════════════════════════════
 
+ruta="/media/carlos/Personal"
 ruta_log="/home/carlos/Documentos/Sync-rclone.log"
 
 main="Andreius_14"
 drive="Carma_379"
 
-ruta="/media/carlos/Personal"
-
 #Drive
 drive_arte="$drive:/101__Arte"
 drive_book="$drive:/Files/Mis-Libros"
 drive_music="$drive:/101__Musica"
-
 drive_personal="$main:/__Personal"
 
 #Local
@@ -31,37 +29,44 @@ ruta_book="$ruta/101__Libros"
 ruta_music="$ruta/101__Musica"
 ruta_personal="$ruta/__Personal"
 
-flag=(--progress --track-renames --create-empty-src-dirs --conflict-resolve newer)
+flag=(
+    --fast-list
+    --progress
+    --track-renames
+    --checksum
+    --create-empty-src-dirs
+    --conflict-resolve newer
+)
+
+rclone="/usr/bin/rclone"
+send="/usr/bin/notify-send"
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
 #════════════════════════════════════════════════════════════════════
-verificaDirectorio() {
-    /usr/bin/notify-send "Probando $1"
+msm() {
+    echo -e "\n==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando $1 ====" >>"$ruta_log"
+}
 
+verificar_ruta_correcta() {
+    #Enviando Data
     if [ ! -d "$1" ]; then
+        #Log
         msm "Carpeta no encontrada: $1"
-        /usr/bin/notify-send "Rclone ⚠️" "No existe la carpeta local: $1"
+        #Usuario
+        $send "Rclone ⚠️" "No existe la carpeta: $1"
+        #Function 
         return 1
     fi
 }
 
-msm() {
-    echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando $1 ====" >>"$ruta_log"
-}
-
 run() {
-    # Verificar primero la existencia de la carpeta local
-    verificaDirectorio "$1" || return 1
+    verificar_ruta_correcta "$1" || return 1
 
-    /usr/bin/rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1 ||
-        /usr/bin/notify-send "Rclone ❌" "Error en: $1"
+    $rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1 || $send "Rclone ❌" "Error - $1"
 }
 
-# ═══════════════════════════════
-#             clean
-# ═══════════════════════════════
-
+#Limpiando Archivo Log
 [ -f "$ruta_log" ] && [ $(stat -c%s "$ruta_log") -gt 5000000 ] && : >"$ruta_log"
 
 #════════════════════════════════════════════════════════════════════
