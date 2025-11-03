@@ -33,9 +33,9 @@ flag=(
     --fast-list
     --progress
     --track-renames
-    --checksum
     --create-empty-src-dirs
     --conflict-resolve newer
+    --conflict-loser delete
 )
 
 rclone="/usr/bin/rclone"
@@ -55,7 +55,7 @@ verificar_ruta_correcta() {
         msm "Carpeta no encontrada: $1"
         #Usuario
         $send "Rclone ⚠️" "No existe la carpeta: $1"
-        #Function 
+        #Function
         return 1
     fi
 }
@@ -63,7 +63,10 @@ verificar_ruta_correcta() {
 run() {
     verificar_ruta_correcta "$1" || return 1
 
-    $rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1 || $send "Rclone ❌" "Error - $1"
+    $rclone bisync "$1" "$2" "${flag[@]}" >>"$ruta_log" 2>&1 || {
+        $send "Rclone ❌" "Error - $1"
+        $rclone bisync "$1" "$2" "${flag[@]}" --resync  >>"$ruta_log" 2>&1
+    }
 }
 
 #Limpiando Archivo Log
