@@ -24,8 +24,8 @@ msm_log() {
     echo "==== $(date '+%Y-%m-%d %H:%M:%S') → Sincronizando $1 ====" >>"$ruta_log"
 }
 
-msm(){ 
-    /usr/bin/notify-send "Sincronizacion Spotdl - $1" 
+msm() {
+    /usr/bin/notify-send "Sincronizacion Spotdl - $1"
 }
 
 run() {
@@ -45,12 +45,13 @@ run() {
         msm_log "$titulo (formato: $formato)"
 
         if $spotdl --format "$formato" sync "$ruta_File" --overwrite skip --output "$carpeta" >>"$ruta_log" 2>&1; then
-            msm "✅ $titulo completado"
+            : # no-op
+            # msm "✅ $titulo completado"
         else
             msm "❌ Error en $titulo"
         fi
 
-    done < <(find "$ruta" -name "*.spotdl" -print0 )
+    done < <(find "$ruta" -name "*.spotdl" -print0)
 
 }
 
@@ -63,7 +64,6 @@ run() {
 #════════════════════════════════════════════════════════════════════
 #                      Ejecucion de Comandos
 #════════════════════════════════════════════════════════════════════
-
 
 # msm "Prueba"
 # run "$ruta_prueba"
