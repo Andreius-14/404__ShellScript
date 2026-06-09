@@ -10,7 +10,6 @@ habilitar_zsh() {
     # Inicio
     if [ -d "$HOME/.oh-my-zsh" ]; then
         echo "Oh-My-Zsh ===> Ya instalado."
-        Zsh_Plugins
 
         # Verificar si está configurado en el archivo .zshrc
         if grep -q "oh-my-zsh" "$HOME/.zshrc"; then
@@ -25,7 +24,6 @@ habilitar_zsh() {
 
         # Ejecutando
         sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-        Zsh_Plugins
     fi
 
     # Fin
@@ -42,4 +40,54 @@ Zsh_Plugins() {
 
 }
 
+habilitar_Plugin() {
+    local zshrc="$HOME/.zshrc"
+
+    txt_color ">> Configurando plugins en .zshrc..." "blue"
+
+    if [ ! -f "$zshrc" ]; then
+        txt_color "Error: No se encontró el archivo $zshrc" "red"
+        return 1
+    fi
+
+    # Plugins que deseas tener sí o sí
+    local plugins_to_add=(
+        zsh-autosuggestions
+        zsh-syntax-highlighting
+        colored-man-pages
+        history
+        zoxide
+        you-should-use
+        copypath
+        bgnotify
+        zsh-fzf-history-search
+
+        autojump
+    )
+
+    # Plugin txt - Habilitados
+    local current_plugins=$(sed -n '/^plugins=(/,/^)/p' "$zshrc" | sed 's/plugins=(//g' | sed 's/)//g')
+
+    for plugin in "${plugins_to_add[@]}"; do
+        # Buscar si el plugin existe en el texto (palabra completa)
+        if ! echo "$current_plugins" | grep -qw "$plugin"; then
+            missing+=("$plugin")
+        fi
+    done
+
+    if [ ${#missing[@]} -eq 0 ]; then
+        txt_color "Todos los plugins ya están activos en ~/.zshrc." "green"
+    else
+        txt_color "Agregalos a tu archivo .zshrc:" "yellow"
+        echo "${missing[*]}"
+    fi
+
+    txt_color "Comentados:" "yellow"
+    echo "$(echo "$current_plugins" | grep "#")"
+}
+
 habilitar_zsh
+
+__preguntaDeConfirmacion "Instalar/Actualizar plugins" && Zsh_Plugins
+
+habilitar_Plugin
