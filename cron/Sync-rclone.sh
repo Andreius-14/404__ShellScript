@@ -1,4 +1,6 @@
 #!/bin/bash
+source "$(dirname "$0")/__config.sh"
+
 #════════════════════════════════════════════════════════════════════
 #                   Habilitando Modo Grafico
 #════════════════════════════════════════════════════════════════════
@@ -40,14 +42,16 @@ drive_personal="$main:/__Personal"
 #          │                     Ubicacion Local                      │
 #          ╰──────────────────────────────────────────────────────────╯
 
-ruta="/media/carlos/Personal"
-ruta_log="/home/carlos/Documentos/Sync-rclone.log"
+ruta="$RUTA_PARTICION_LOCAL_MULTIPLATAFORMA"
+ruta_log="$RUTA_ARCHIVOS_LOG/Sync-rclone.log"
 
 ruta_arte="$ruta/101__Arte"
 ruta_book="$ruta/101__Libros"
 ruta_music="$ruta/101__Musica"
 ruta_personal="$ruta/__Personal"
 
+# Asegurar que el directorio de logs exista antes de escribir
+mkdir -p "$RUTA_ARCHIVOS_LOG"
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
