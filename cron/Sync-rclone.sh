@@ -42,12 +42,12 @@ drive_personal="$main:/__Personal"
 #          │                     Ubicacion Local                      │
 #          ╰──────────────────────────────────────────────────────────╯
 
-ruta="$RUTA_PARTICION_LOCAL_MULTIPLATAFORMA"
+ruta="$RUTA_PARTICION_LOCAL_MULTIPLATAFORMA/__Rclone"
 ruta_log="$RUTA_ARCHIVOS_LOG/Sync-rclone.log"
 
-ruta_arte="$ruta/101__Arte"
-ruta_book="$ruta/101__Libros"
-ruta_music="$ruta/101__Musica"
+ruta_arte="$ruta/__Arte"
+ruta_book="$ruta/__Libros"
+ruta_music="$ruta/__Musica"
 ruta_personal="$ruta/__Personal"
 
 # Asegurar que el directorio de logs exista antes de escribir
