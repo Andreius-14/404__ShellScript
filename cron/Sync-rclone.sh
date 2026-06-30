@@ -11,24 +11,6 @@ export XAUTHORITY=/home/carlos/.Xauthority
 #                  Variables de configuración
 #════════════════════════════════════════════════════════════════════
 
-ruta="/media/carlos/Personal"
-ruta_log="/home/carlos/Documentos/Sync-rclone.log"
-
-main="Andreius_14"
-drive="Carma_379"
-
-#Drive
-drive_arte="$drive:/101__Arte"
-drive_book="$drive:/Files/Mis-Libros"
-drive_music="$drive:/101__Musica"
-drive_personal="$main:/__Personal"
-
-#Local
-ruta_arte="$ruta/101__Arte"
-ruta_book="$ruta/101__Libros"
-ruta_music="$ruta/101__Musica"
-ruta_personal="$ruta/__Personal"
-
 flag=(
     --fast-list
     --progress
@@ -40,6 +22,32 @@ flag=(
 
 rclone="/usr/bin/rclone"
 send="/usr/bin/notify-send"
+
+#          ╭──────────────────────────────────────────────────────────╮
+#          │                  Ubicacion GoogleDrive                   │
+#          ╰──────────────────────────────────────────────────────────╯
+# List-remotes (rclone listremotes) 
+
+main="Andreius_14"
+hobby="Carma_379"
+
+drive_art="$hobby:/101__Arte"
+drive_book="$hobby:/Files/Mis-Libros"
+drive_music="$hobby:/101__Musica"
+drive_personal="$main:/__Personal"
+
+#          ╭──────────────────────────────────────────────────────────╮
+#          │                     Ubicacion Local                      │
+#          ╰──────────────────────────────────────────────────────────╯
+
+ruta="/media/carlos/Personal"
+ruta_log="/home/carlos/Documentos/Sync-rclone.log"
+
+ruta_arte="$ruta/101__Arte"
+ruta_book="$ruta/101__Libros"
+ruta_music="$ruta/101__Musica"
+ruta_personal="$ruta/__Personal"
+
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
@@ -79,7 +87,7 @@ run() {
 /usr/bin/notify-send "Sincronizacion Rclone" "Sincronizacion Rclone y Google Drive hydra_falsa@outlook.com ✅"
 
 msm "Arte"
-run "$ruta_arte" "$drive_arte"
+run "$ruta_arte" "$drive_art"
 
 msm "Libros"
 run "$ruta_book" "$drive_book"
