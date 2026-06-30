@@ -1,5 +1,5 @@
 #!/bin/bash
-
+source "$(dirname "$0")/__config.sh"
 #════════════════════════════════════════════════════════════════════
 #                   Habilitando Modo Grafico
 #════════════════════════════════════════════════════════════════════
@@ -11,11 +11,15 @@ export XAUTHORITY="$HOME/.Xauthority" # <-- esta asegura el acceso a tu sesión
 #════════════════════════════════════════════════════════════════════
 #                  Variables de configuración
 #════════════════════════════════════════════════════════════════════
-ruta_log="$HOME/Documentos/Sync-spotdl.log"
+ruta_log="$RUTA_ARCHIVOS_LOG/Sync-spotdl.log"
 ruta_prueba="$HOME/Música/"
-ruta_playlist="/media/carlos/Personal/101__Musica/Spotify - Mis Playlist/"
+ruta_playlist="$RUTA_PARTICION_LOCAL_MULTIPLATAFORMA/__Rclone/__Musica/Spotify - Mis Playlist/"
 
 spotdl="$HOME/.local/bin/spotdl"
+
+# Asegurar que el directorio de logs exista antes de escribir
+mkdir -p "$RUTA_ARCHIVOS_LOG"
+
 
 #════════════════════════════════════════════════════════════════════
 #                       Function
