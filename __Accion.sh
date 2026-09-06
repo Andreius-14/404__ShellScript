@@ -47,6 +47,16 @@ __instalarPaquete() {
             return 1
         }
         ;;
+    "apt")
+        if command -v sudo >/dev/null 2>&1; then
+            sudo apt update && sudo apt install -y "$paquete"
+        else
+            apt update && apt install -y "$paquete"
+        fi || {
+            __Error "No se pudo instalar '$paquete' con apt."
+            return 1
+        }
+        ;;
     esac
 
     return 0

@@ -7,12 +7,12 @@ __detectarGestorPaquetes() {
     # Lista de gestores de paquetes a verificar (en orden de preferencia)
     if command -v pacman >/dev/null 2>&1; then
         gestor="pacman"
-    elif command -v pkg >/dev/null 2>&1; then
-        gestor="pkg"
     elif command -v apt >/dev/null 2>&1; then
         gestor="apt"
+    elif command -v pkg >/dev/null 2>&1; then
+        gestor="pkg"
     elif command -v dnf >/dev/null 2>&1; then
-        gestor="dnf"
+         gestor="dnf"
     elif command -v yum >/dev/null 2>&1; then
         gestor="yum"
     elif command -v zypper >/dev/null 2>&1; then
