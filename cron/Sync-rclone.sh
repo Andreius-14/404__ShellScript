@@ -90,14 +90,14 @@ run() {
 
 /usr/bin/notify-send "Sincronizacion Rclone" "Sincronizacion Rclone y Google Drive hydra_falsa@outlook.com ✅"
 
-msm "Arte"
-run "$ruta_arte" "$drive_art"
-
-msm "Libros"
-run "$ruta_book" "$drive_book"
-
-msm "Musica"
-run "$ruta_music" "$drive_music"
+# msm "Arte"
+# run "$ruta_arte" "$drive_art"
+#
+# msm "Libros"
+# run "$ruta_book" "$drive_book"
+#
+# msm "Musica"
+# run "$ruta_music" "$drive_music"
 
 msm "Personal - A14"
 run "$ruta_personal" "$drive_personal"
