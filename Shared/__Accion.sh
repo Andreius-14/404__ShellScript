@@ -1,5 +1,11 @@
 source __Base.sh
 
+# --- GUARD ---
+[[ -n "${__ACCION_SH_LOADED:-}" ]] && return
+__ACCION_SH_LOADED=1
+# -------------
+
+# Tus funciones y código de acciones aquí...
 # ═══════════════════════════════
 #         VERIFICADORES
 # ═══════════════════════════════

@@ -1,4 +1,12 @@
 source __Base.sh
+
+
+# --- GUARD ---
+[[ -n "${__STRING_SH_LOADED:-}" ]] && return
+__STRING_SH_LOADED=1
+# -------------
+
+# Tus funciones y código de strings aquí...
 # EXTRA
 
 __detectarGestorPaquetes() {

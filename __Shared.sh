@@ -2,11 +2,15 @@
 
 DIR="$(dirname "${BASH_SOURCE[0]}")"
 
-# Carga los archivos usando esa ruta fija
+
+# Produccion
 source "$DIR/Shared/__Base.sh"
 source "$DIR/Shared/__Bool.sh"
 source "$DIR/Shared/__Accion.sh"
 source "$DIR/Shared/__String.sh"
 
-
-# echo "$DIR"
+# Develoment
+source "./Shared/__Base.sh"
+source "./Shared/__Bool.sh"
+source "./Shared/__Accion.sh"
+source "./Shared/__String.sh"

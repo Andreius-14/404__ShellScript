@@ -1,4 +1,11 @@
 source __Base.sh
+
+# --- GUARD ---
+[[ -n "${__BOOL_SH_LOADED:-}" ]] && return
+__BOOL_SH_LOADED=1
+# -------------
+
+# Tus funciones y código de booleanos aquí...
 # Psdt: Mensaje Personalizado si Esta Instalado O no el Comando
 __EstaInstalado() {
     local comando="$1" # El comando a verificar
