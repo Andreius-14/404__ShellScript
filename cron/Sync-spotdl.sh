@@ -72,8 +72,8 @@ run() {
 # msm "Prueba"
 # run "$ruta_prueba"
 
-msm "Playlist"
-run "$ruta_playlist"
+# msm "Playlist"
+# run "$ruta_playlist"
 
 msm "Proceso completado"
 msm_log "Fin de sincronización"

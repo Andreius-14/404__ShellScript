@@ -2,6 +2,8 @@
 #         MENSAJES
 # ═══════════════════════════════
 
+MSM_BASE="BASE"
+
 txt_color() {
     local msg="$1"   # El texto que será coloreado
     local color="$2" # El color en inglés

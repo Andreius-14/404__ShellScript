@@ -2,6 +2,9 @@
 
 source __Shared-Cron.sh
 
+DIR="$(dirname "${BASH_SOURCE[0]}")"
+source "$DIR/../__Shared.sh"
+
 # export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 # export HOME=/home/carlos
 
@@ -57,8 +60,8 @@ export XAUTHORITY=/home/carlos/.Xauthority # <-- esta asegura el acceso a tu ses
 # head="/usr/bin/head"
 # awk="/usr/bin/awk"
 
-
 notify-send "Hola-Prueba"
+notify-send "$MSM_BASE"
 /usr/bin/notify-send "Jo"
 
 # spotdl

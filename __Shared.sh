@@ -1,6 +1,12 @@
 #!/bin/bash
 
-source __Base.sh
-source __Bool.sh
-source __Accion.sh
-source __String.sh
+DIR="$(dirname "${BASH_SOURCE[0]}")"
+
+# Carga los archivos usando esa ruta fija
+source "$DIR/Shared/__Base.sh"
+source "$DIR/Shared/__Bool.sh"
+source "$DIR/Shared/__Accion.sh"
+source "$DIR/Shared/__String.sh"
+
+
+# echo "$DIR"
